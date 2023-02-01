@@ -1,0 +1,13 @@
+/data/
+/300VW_Dataset_2015_12_14/
+/dataset/
+/logs/
+/venv/
+
+
+*.txt
+*.zip
+*.png
+
+__pycache__
+

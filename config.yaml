@@ -1,0 +1,8 @@
+dataset:
+  path: ./300VW_Dataset_2015_12_14/300VW_Dataset_2015_12_14
+  new_path: ./dataset
+  ignore_files: ["extra.zip", "ReadMe.txt"]
+  video_file_name: vid.avi
+  save_every: 5
+  face_detection_padding: 20 #pixel
+  log_file: logs/saved_images_record_file_20230115_233800.txt
