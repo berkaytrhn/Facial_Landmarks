@@ -2,7 +2,7 @@ import cv2
 import mediapipe as mp
 import argparse
 from time import time
-import my_utils as mu
+import utils as mu
 import numpy as np
 
 def detect_face(image:np.ndarray):
