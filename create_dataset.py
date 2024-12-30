@@ -8,9 +8,9 @@ import numpy as np
 
 from config import Config
 
-import my_utils as mu
+import utils as mu
 from mediapipe_face_detection import detect_face
-
+from dto import DatasetCreationConfiguration
 
 logging.basicConfig(level = logging.INFO)
 
@@ -18,17 +18,19 @@ logging.basicConfig(level = logging.INFO)
 def read_save_video(
     params:dict
 ):
+    
+    
     ## reading video file
-    config = params["config"]
+    config: DatasetCreationConfiguration = params["data_creation"]
 
-    base_path = config["dataset"]["path"]
-    new_path = config["dataset"]["new_path"]
+    base_path = config.dataset_path
+    new_path = config.dataset_out_path
 
-    video_directory = params["video_directory"]
-    save_every = params["save_every"]
+    video_directory = "./"
+    save_every = config.save_every
 
     
-    cap = cv2.VideoCapture(os.path.join(base_path, video_directory, config["dataset"]["video_file_name"]))
+    cap = cv2.VideoCapture(os.path.join(base_path, video_directory, config.video_file_name))
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
     pbar = tqdm(total=length, ascii=True)
@@ -43,7 +45,7 @@ def read_save_video(
                 
                 if (counter%save_every)==0:
 
-                    record_file_path = config["dataset"]["log_file"]
+                    record_file_path = config.log_file
 
                     # face detection and crop image
                     # we should add padding to face detection bbox values to include more landmark 
@@ -57,7 +59,7 @@ def read_save_video(
 
 
                     # apply padding
-                    face_bbox = mu.apply_bbox_padding(face_bbox, config["dataset"]["face_detection_padding"], frame.shape[:2])
+                    face_bbox = mu.apply_bbox_padding(face_bbox, config.face_detection_padding, frame.shape[:2])
 
                     x_min, y_min, x_max, y_max = face_bbox
                     cropped_image = frame[y_min:y_max, x_min:x_max]
@@ -86,7 +88,7 @@ def read_save_video(
                     file_write_text = None    
 
                     
-                    previous_path = os.path.join(base_path,video_directory,config['dataset']['video_file_name'])
+                    previous_path = os.path.join(base_path,video_directory,config.video_file_name)
                     saved_path = os.path.join(new_path,video_directory,image_name)
 
                     if not (res_img and res_points):
